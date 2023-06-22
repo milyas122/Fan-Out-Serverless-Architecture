@@ -1,0 +1,35 @@
+notification-queue:
+  type: queue
+  worker:
+    handler: src/notification.handler
+    name: sendNotification-${self:provider.stage}
+    package:
+      patterns:
+        - src/notification.js
+        - "!cfn/**"
+    layers:
+      - !Ref NodeModulesLambdaLayer
+
+order-shipment-queue:
+  type: queue
+  worker:
+    handler: src/order-shipment.handler
+    name: orderShipment-${self:provider.stage}
+    package:
+      patterns:
+        - src/order-shipment.js
+        - "!cfn/**"
+    layers:
+      - !Ref NodeModulesLambdaLayer
+
+digital-order-processing-queue:
+  type: queue
+  worker:
+    handler: src/digital-order-processing.handler
+    name: digitalOrderProcessing-${self:provider.stage}
+    package:
+      patterns:
+        - src/digital-order-processing.js
+        - "!cfn/**"
+    layers:
+      - !Ref NodeModulesLambdaLayer

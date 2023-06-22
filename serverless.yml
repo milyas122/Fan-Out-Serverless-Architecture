@@ -27,7 +27,6 @@ package:
     - "!./*"
     - "!node_modules/**"
     - "!src/**"
-    - "!cfn/**"
 
 layers:
   NodeModules:
@@ -46,7 +45,8 @@ plugins:
 functions:
   - ${file(cfn/functions.yml)}
 
-constructs: ${file(cfn/sqs-queue.yml)}
+constructs: ${file(cfn/sqs.yml)}
 
 resources:
   - ${file(cfn/dynamoDb.yml)}
+  - ${file(cfn/sns.yml)}

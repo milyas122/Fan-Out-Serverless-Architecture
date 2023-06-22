@@ -4,6 +4,7 @@ order-acknowledgement:
   package:
     patterns:
       - src/order-acknowledgement.js
+      - "!cfn/**"
   layers:
     - !Ref NodeModulesLambdaLayer
   events:

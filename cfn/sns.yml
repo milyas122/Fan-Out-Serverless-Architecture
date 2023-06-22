@@ -1,0 +1,16 @@
+Resources:
+  FanoutSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "FanoutTopic"
+
+  NotificationSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref FanoutSNSTopic
+      Endpoint: ${construct:notification-queue.queueArn}
+      Protocol: sqs
+      RawMessageDelivery: true
+      FilterPolicy:
+        notification:
+          - true
