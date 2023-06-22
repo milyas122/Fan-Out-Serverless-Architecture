@@ -1,0 +1,14 @@
+notification-queue:
+  type: queue
+  worker:
+    handler: src/notification.handler
+
+order-shipment-queue:
+  type: queue
+  worker:
+    handler: src/order-shipment.handler
+
+digital-order-processing-queue:
+  type: queue
+  worker:
+    handler: src/digital-order-processing.handler

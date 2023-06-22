@@ -1,0 +1,13 @@
+order-acknowledgement:
+  handler: src/order-acknowledgement.
+  name: orderAcknowledgement-${self:provider.stage}
+  package:
+    patterns:
+      - src/order-acknowledgement.js
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  events:
+    - http:
+        path: /orders/acknowledgement
+        method: post
+        cors: true

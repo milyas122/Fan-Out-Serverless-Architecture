@@ -3,6 +3,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "serverless-iam-roles-per-function": "^3.2.0"
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-lift": "^1.27.0"
   }
 }

@@ -23,13 +23,11 @@ provider:
 
 package:
   individually: true
-  # exclude:
-  #   - ./**
-  #   - layers/**
   patterns:
     - "!./*"
-    - src/**
     - "!node_modules/**"
+    - "!src/**"
+    - "!cfn/**"
 
 layers:
   NodeModules:
@@ -43,52 +41,12 @@ custom:
 
 plugins:
   - serverless-iam-roles-per-function
+  - serverless-lift
 
 functions:
-  hello:
-    handler: src/order-acknowledgement.handler
-    package:
-      patterns:
-        - src/order-acknowledgement.js
-    layers:
-      - !Ref NodeModulesLambdaLayer
-    events:
-      - http:
-          path: /orders/acknowledgement
-          method: post
-          cors: true
+  - ${file(cfn/functions.yml)}
+
+constructs: ${file(cfn/sqs-queue.yml)}
 
 resources:
-  Resources:
-    orders:
-      Type: "AWS::DynamoDB::Table"
-      Properties:
-        TableName: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
-        AttributeDefinitions:
-          - AttributeName: "id"
-            AttributeType: "S"
-          - AttributeName: "status"
-            AttributeType: "S"
-          - AttributeName: "created_at"
-            AttributeType: "S"
-          - AttributeName: "type"
-            AttributeType: "S"
-        KeySchema:
-          - AttributeName: "id"
-            KeyType: "HASH"
-          - AttributeName: "type"
-            KeyType: "RANGE"
-        GlobalSecondaryIndexes:
-          - IndexName: status-date-index
-            KeySchema:
-              - AttributeName: status
-                KeyType: HASH
-              - AttributeName: created_at
-                KeyType: RANGE
-            Projection:
-              NonKeyAttributes: []
-              ProjectionType: ALL
-        BillingMode: "PAY_PER_REQUEST"
-        Tags:
-          - Key: "Name"
-            Value: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
+  - ${file(cfn/dynamoDb.yml)}

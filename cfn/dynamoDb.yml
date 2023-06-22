@@ -1,0 +1,33 @@
+Resources:
+  orders:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "status"
+          AttributeType: "S"
+        - AttributeName: "created_at"
+          AttributeType: "S"
+        - AttributeName: "type"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+        - AttributeName: "type"
+          KeyType: "RANGE"
+      GlobalSecondaryIndexes:
+        - IndexName: status-date-index
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: created_at
+              KeyType: RANGE
+          Projection:
+            NonKeyAttributes: []
+            ProjectionType: ALL
+      BillingMode: "PAY_PER_REQUEST"
+      Tags:
+        - Key: "Name"
+          Value: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
