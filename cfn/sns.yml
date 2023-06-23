@@ -11,6 +11,25 @@ Resources:
       Endpoint: ${construct:notification-queue.queueArn}
       Protocol: sqs
       RawMessageDelivery: true
+
+  DigitalOrderProcessingSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref FanoutSNSTopic
+      Endpoint: ${construct:digital-order-processing-queue.queueArn}
+      Protocol: sqs
+      RawMessageDelivery: true
       FilterPolicy:
-        notification:
-          - true
+        orderType:
+          - digital
+
+  OrderShipmentSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref FanoutSNSTopic
+      Endpoint: ${construct:order-shipment-queue.queueArn}
+      Protocol: sqs
+      RawMessageDelivery: true
+      FilterPolicy:
+        orderType:
+          - physical
