@@ -1,4 +1,8 @@
-# Fanout Pattern
+# Building Fan-Out Serverless Architecture
+
+Microservices based architectures require scalable and durable messaging systems to act as the backbone of the application. By using SNS and SQS to build fan-out patterns, you can simplify microservices communication and scale them seamlessly
+
+![Fan-Out Architecture](Fanout.PNG)
 
 ## Installation
 
