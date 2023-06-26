@@ -37,10 +37,12 @@ layers:
 custom:
   settings:
     ORDER_DYNAMODB_TABLE: orders
+    SNS_TOPIC_ARN: !Ref FanoutSNSTopic
 
 plugins:
   - serverless-iam-roles-per-function
   - serverless-lift
+  - serverless-offline
 
 functions:
   - ${file(cfn/functions.yml)}

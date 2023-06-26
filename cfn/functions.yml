@@ -1,5 +1,5 @@
 order-acknowledgement:
-  handler: src/order-acknowledgement.
+  handler: src/order-acknowledgement.handler
   name: orderAcknowledgement-${self:provider.stage}
   package:
     patterns:
@@ -7,8 +7,21 @@ order-acknowledgement:
       - "!cfn/**"
   layers:
     - !Ref NodeModulesLambdaLayer
+  iamRoleStatementsName: orderAcknowledgement-role-${self:provider.stage}-${self:provider.region}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - sns:Publish
+      Resource: !Ref FanoutSNSTopic
+    - Effect: "Allow"
+      Action:
+        - dynamodb:PutItem
+      Resource: !GetAtt orders.Arn
   events:
     - http:
         path: /orders/acknowledgement
         method: post
         cors: true
+  environment:
+    ORDER_TABLE: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
+    SNS_TOPIC_ARN: ${self:custom.settings.SNS_TOPIC_ARN}

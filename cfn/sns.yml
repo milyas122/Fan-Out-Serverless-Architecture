@@ -33,3 +33,45 @@ Resources:
       FilterPolicy:
         orderType:
           - physical
+
+  NotificationSubscriberQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - ${construct:notification-queue.queueUrl}
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Action:
+              - "SQS:SendMessage"
+            Resource: ${construct:notification-queue.queueArn}
+
+  OrderShipmentSubscriberQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - ${construct:order-shipment-queue.queueUrl}
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Action:
+              - "SQS:SendMessage"
+            Resource: ${construct:order-shipment-queue.queueArn}
+
+  DigitalOrderSubscriberQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - ${construct:digital-order-processing-queue.queueUrl}
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Action:
+              - "SQS:SendMessage"
+            Resource: ${construct:digital-order-processing-queue.queueArn}
