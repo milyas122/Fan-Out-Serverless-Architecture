@@ -13,11 +13,8 @@ const topicArn = process.env.SNS_TOPIC_ARN;
 
 module.exports.handler = async (event) => {
   const data = JSON.parse(event.body);
-  // console.log(event);
-  // const data = event;
   const id = uuidv4().toString();
   await createOrder({ id, ...data });
-  console.log("fine");
   const sns_command = new PublishCommand({
     TopicArn: topicArn,
     Message: JSON.stringify({ id, ...data }),

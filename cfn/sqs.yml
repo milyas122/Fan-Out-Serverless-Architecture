@@ -21,6 +21,14 @@ order-shipment-queue:
         - "!cfn/**"
     layers:
       - !Ref NodeModulesLambdaLayer
+    iamRoleStatementsName: order-shipment-queue-role-${self:provider.stage}-${self:provider.region}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: !GetAtt orders.Arn
+    environment:
+      ORDER_TABLE: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
 
 digital-order-processing-queue:
   type: queue
@@ -33,3 +41,11 @@ digital-order-processing-queue:
         - "!cfn/**"
     layers:
       - !Ref NodeModulesLambdaLayer
+    iamRoleStatementsName: digital-order-processing-queue-role-${self:provider.stage}-${self:provider.region}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: !GetAtt orders.Arn
+    environment:
+      ORDER_TABLE: ${self:custom.settings.ORDER_DYNAMODB_TABLE}
